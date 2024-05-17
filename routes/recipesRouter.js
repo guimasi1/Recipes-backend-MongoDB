@@ -1,7 +1,6 @@
 const express = require("express");
 const recipesController = require("../controllers/recipesController");
 const recipeRegistrationSchema = require("../util/recipeRegistrationSchema");
-const { check, validationResult } = require("express-validator");
 const router = express.Router();
 const validate = require("../util/validate");
 
