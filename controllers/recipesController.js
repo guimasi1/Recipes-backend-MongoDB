@@ -10,7 +10,7 @@ exports.getRecipes = async (req, res, next) => {
     });
   } catch (err) {
     res.status(400).json({
-      status: "failed",
+      status: "Failed",
       message: err,
     });
   }
@@ -20,12 +20,12 @@ exports.getSingleRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     res.status(200).json({
-      status: "success",
+      status: "Success",
       data: recipe,
     });
   } catch (err) {
     res.status(400).json({
-      status: "failed",
+      status: "Failed",
       message: err,
     });
   }
@@ -36,12 +36,12 @@ exports.postNewRecipe = async (req, res, next) => {
     const newRecipe = await Recipe.create(req.body);
 
     res.status(201).json({
-      status: "recipe successfully created",
+      status: "Recipe successfully created",
       newRecipe,
     });
   } catch (err) {
     res.status(400).json({
-      status: "failed",
+      status: "Failed",
       message: err,
     });
   }
@@ -57,7 +57,7 @@ exports.editRecipe = async (req, res, next) => {
       }
     );
     res.status(200).json({
-      status: "reciped successfully edited",
+      status: "Reciped successfully edited",
       recipe: updatedRecipe,
     });
   } catch (err) {
@@ -72,19 +72,19 @@ exports.deleteRecipe = async (req, res, next) => {
   try {
     const recipeId = req.params.id;
     const deleted = await Recipe.findByIdAndDelete(recipeId);
-    if (deleted) {
-      res.status(204).json({
-        status: "recipe with id: " + recipeId + " deleted",
-      });
-    } else {
+    if (!deleted) {
       res.status(404).json({
-        status: "not found",
+        status: "Not found",
         message: "No recipe found with id: " + recipeId,
       });
     }
+
+    res.status(204).json({
+      status: "Recipe with id: " + recipeId + " deleted",
+    });
   } catch (err) {
     res.status(400).json({
-      status: "failed to delete",
+      status: "Failed to delete",
       message: err,
     });
   }
