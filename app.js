@@ -2,7 +2,6 @@ require("dotenv").config({ path: "./config.env" });
 
 const express = require("express");
 const mongoose = require("mongoose");
-const Recipe = require("./models/recipeModel");
 const recipesRouter = require("./routes/recipesRouter");
 const bodyParser = require("body-parser");
 
