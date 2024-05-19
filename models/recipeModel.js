@@ -13,6 +13,7 @@ const recipeSchema = new mongoose.Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
 });
 

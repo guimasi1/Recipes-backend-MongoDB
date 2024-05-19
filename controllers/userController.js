@@ -29,6 +29,7 @@ exports.getSingleUser = async (req, res, next) => {
       id: user._id,
       email: user.email,
       imageUrl: user.imageUrl,
+      userRecipe: user.recipe,
     });
   } catch (err) {
     return errorResponse(res, 400, "Failed to get the user.");

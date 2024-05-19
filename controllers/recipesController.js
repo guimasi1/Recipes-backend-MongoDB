@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipeModel");
+const errorResponse = require("../util/errorResponse");
 
 exports.getRecipes = async (req, res, next) => {
   try {
@@ -9,7 +10,11 @@ exports.getRecipes = async (req, res, next) => {
       },
     });
   } catch (err) {
-    return errorResponse(res, 400, "Failed to get the recipes.");
+    return errorResponse(
+      res,
+      400,
+      "Failed to get the recipes. Error: " + err.message
+    );
   }
 };
 
@@ -21,7 +26,11 @@ exports.getSingleRecipe = async (req, res, next) => {
       data: recipe,
     });
   } catch (err) {
-    return errorResponse(res, 400, "Failed to get the recipe.");
+    return errorResponse(
+      res,
+      400,
+      "Failed to get the recipe. Error: " + err.message
+    );
   }
 };
 
@@ -34,7 +43,11 @@ exports.postNewRecipe = async (req, res, next) => {
       newRecipe,
     });
   } catch (err) {
-    return errorResponse(res, 400, "Failed to create the recipe.");
+    return errorResponse(
+      res,
+      400,
+      "Failed to create the recipe. Error: " + err.message
+    );
   }
 };
 
@@ -52,7 +65,11 @@ exports.editRecipe = async (req, res, next) => {
       recipe: updatedRecipe,
     });
   } catch (err) {
-    return errorResponse(res, 400, "Failed to edit the recipe.");
+    return errorResponse(
+      res,
+      400,
+      "Failed to edit the recipe. Error: " + err.message
+    );
   }
 };
 
@@ -71,6 +88,27 @@ exports.deleteRecipe = async (req, res, next) => {
       status: "Recipe with id: " + recipeId + " deleted",
     });
   } catch (err) {
-    return errorResponse(res, 400, "Failed to delete the recipe.");
+    return errorResponse(
+      res,
+      400,
+      "Failed to delete the recipe. Error: " + err.message
+    );
+  }
+};
+
+exports.getRecipesByUserId = async (req, res, next) => {
+  try {
+    const recipes = await Recipe.find({ author: req.params.id }).exec();
+    res.status(200).json({
+      data: {
+        recipes,
+      },
+    });
+  } catch (err) {
+    return errorResponse(
+      res,
+      400,
+      "Failed to get the recipes. Error: " + err.message
+    );
   }
 };
