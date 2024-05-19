@@ -6,9 +6,11 @@ const recipesRouter = require("./routes/recipesRouter");
 const authRouter = require("./routes/authRouter");
 const usersRouter = require("./routes/usersRouter");
 const bodyParser = require("body-parser");
+const cors = require("./util/cors");
 
 const app = express();
 
+app.use(cors);
 app.use(bodyParser.json());
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);

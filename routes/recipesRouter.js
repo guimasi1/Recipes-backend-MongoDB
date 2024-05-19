@@ -1,18 +1,24 @@
 const express = require("express");
 const recipesController = require("../controllers/recipesController");
-const recipeRegistrationSchema = require("../util/recipeRegistrationSchema");
+const recipeRegistrationSchema = require("../validation/recipeRegistrationSchema");
 const router = express.Router();
-const validate = require("../util/validate");
+const validate = require("../validation/validate");
+const isAuth = require("../authorization/isAuth");
 
 router
   .route("/")
-  .get(recipesController.getRecipes)
-  .post(recipeRegistrationSchema, validate, recipesController.postNewRecipe);
+  .get(isAuth, recipesController.getRecipes)
+  .post(
+    isAuth,
+    recipeRegistrationSchema,
+    validate,
+    recipesController.postNewRecipe
+  );
 
 router
   .route("/:id")
-  .get(recipesController.getSingleRecipe)
-  .put(recipesController.editRecipe)
-  .delete(recipesController.deleteRecipe);
+  .get(isAuth, recipesController.getSingleRecipe)
+  .put(isAuth, recipesController.editRecipe)
+  .delete(isAuth, recipesController.deleteRecipe);
 
 module.exports = router;

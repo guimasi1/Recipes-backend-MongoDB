@@ -3,8 +3,16 @@ const errorResponse = require("../util/errorResponse");
 
 exports.getRecipes = async (req, res, next) => {
   try {
-    const recipes = await Recipe.find();
+    const { page = 1, limit = 10, sort = "_id" } = req.query;
+
+    const recipes = await Recipe.find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort(sort);
     res.status(200).json({
+      status: "success",
+      page,
+      limit,
       data: {
         recipes,
       },
