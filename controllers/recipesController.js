@@ -9,10 +9,7 @@ exports.getRecipes = async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
-      status: "Failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to get the recipes.");
   }
 };
 
@@ -24,10 +21,7 @@ exports.getSingleRecipe = async (req, res, next) => {
       data: recipe,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "Failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to get the recipe.");
   }
 };
 
@@ -40,10 +34,7 @@ exports.postNewRecipe = async (req, res, next) => {
       newRecipe,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "Failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to create the recipe.");
   }
 };
 
@@ -61,10 +52,7 @@ exports.editRecipe = async (req, res, next) => {
       recipe: updatedRecipe,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to edit the recipe.");
   }
 };
 
@@ -83,9 +71,6 @@ exports.deleteRecipe = async (req, res, next) => {
       status: "Recipe with id: " + recipeId + " deleted",
     });
   } catch (err) {
-    res.status(400).json({
-      status: "Failed to delete",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to delete the recipe.");
   }
 };

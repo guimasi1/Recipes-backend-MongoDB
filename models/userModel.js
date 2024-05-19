@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   imageUrl: String,
+  role: {
+    type: String,
+    enum: ["ADMIN", "USER"],
+    default: "USER",
+  },
 });
 
 userSchema.pre("save", async function (next) {

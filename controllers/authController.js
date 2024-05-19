@@ -19,10 +19,7 @@ exports.signUp = async (req, res, next) => {
       userId: newUser._id,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "Failed to register the new user",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to register the new user.");
   }
 };
 
@@ -53,9 +50,12 @@ exports.login = async (req, res, next) => {
       token,
     });
   } catch (err) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "An error occurred during the login process",
-    });
+    return errorResponse(
+      res,
+      400,
+      "An error occurred during the login process."
+    );
   }
 };
+
+exports.protect = () => {};

@@ -4,6 +4,10 @@ const router = express.Router();
 
 router.route("/").get(userController.getAllUsers);
 
-router.route("/:id").get(userController.getSingleUser).put().delete();
+router
+  .route("/:id")
+  .get(userController.getSingleUser)
+  .put(userController.editUser)
+  .delete();
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const errorResponse = require("../util/errorResponse");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ exports.getAllUsers = async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.status(400).json({ status: "Failed", message: err });
+    return errorResponse(res, 400, "Failed to get all users.");
   }
 };
 
@@ -30,10 +31,7 @@ exports.getSingleUser = async (req, res, next) => {
       imageUrl: user.imageUrl,
     });
   } catch (err) {
-    return res.status(400).json({
-      status: "Failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to get the user.");
   }
 };
 
@@ -51,9 +49,6 @@ exports.editUser = async (req, res, next) => {
       user: updatedUser,
     });
   } catch (err) {
-    return res.status(400).json({
-      status: "Failed",
-      message: err,
-    });
+    return errorResponse(res, 400, "Failed to edit the user.");
   }
 };
