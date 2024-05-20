@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const errorResponse = require("../util/errorResponse");
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -13,9 +14,10 @@ exports.signUp = async (req, res, next) => {
     const newUser = await User.create({
       email: req.body.email,
       password: req.body.password,
+      username: req.body.username,
       imageUrl: req.body.imageUrl,
     });
-    res.status(200).json({
+    return res.status(200).json({
       userId: newUser._id,
     });
   } catch (err) {
@@ -48,6 +50,13 @@ exports.login = async (req, res, next) => {
       status: "Success",
       message: "Logged in successfully",
       token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        imageUrl: user.imageUrl,
+        role: user.role,
+      },
     });
   } catch (err) {
     return errorResponse(

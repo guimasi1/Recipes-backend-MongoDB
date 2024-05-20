@@ -7,6 +7,13 @@ const userRegistrationSchema = checkSchema({
     },
     normalizeEmail: true,
   },
+  username: {
+    isLength: {
+      options: {
+        min: 4,
+      },
+    },
+  },
   password: {
     isLength: {
       options: { min: 8 },
