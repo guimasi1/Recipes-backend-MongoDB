@@ -1,6 +1,7 @@
-const recipeModel = require("../models/recipeModel");
 const Recipe = require("../models/recipeModel");
+const Ingredient = require("../models/ingredientModel");
 const errorResponse = require("../util/errorResponse");
+const mongoose = require("mongoose");
 
 exports.getRecipes = async (req, res, next) => {
   try {
@@ -10,6 +11,7 @@ exports.getRecipes = async (req, res, next) => {
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .sort(sort);
+
     res.status(200).json({
       status: "success",
       page,
@@ -45,19 +47,52 @@ exports.getSingleRecipe = async (req, res, next) => {
 };
 
 exports.postNewRecipe = async (req, res, next) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const newRecipe = await Recipe.create(req.body);
+    const { title, description, imageUrl, author, ingredients } = req.body;
+
+    // Creare e salvare gli ingredienti individualmente
+    let ingredientDocs = [];
+    for (let item of ingredients) {
+      let newIngredient = new Ingredient({
+        name: item.name,
+        unit: item.unit,
+      });
+      await newIngredient.save({ session });
+      ingredientDocs.push({
+        ingredient: newIngredient._id,
+        quantity: item.quantity,
+      });
+    }
+
+    // Creare la ricetta con gli ingredienti
+    let newRecipe = new Recipe({
+      title,
+      description,
+      imageUrl,
+      author,
+      ingredients: ingredientDocs,
+    });
+
+    await newRecipe.save({ session });
+
+    // Commit della transazione
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(201).json({
       status: "Recipe successfully created",
       newRecipe,
     });
   } catch (err) {
-    return errorResponse(
-      res,
-      400,
-      "Failed to create the recipe. Error: " + err.message
-    );
+    await session.abortTransaction();
+    session.endSession();
+    res.status(400).json({
+      status: "Failed to create the recipe",
+      error: err.message,
+    });
   }
 };
 

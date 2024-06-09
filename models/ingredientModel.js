@@ -12,4 +12,4 @@ const ingredientSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.module("Ingredient", ingredientSchema);
+module.exports = mongoose.model("Ingredient", ingredientSchema);

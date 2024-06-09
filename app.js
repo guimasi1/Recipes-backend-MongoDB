@@ -5,8 +5,10 @@ const mongoose = require("mongoose");
 const recipesRouter = require("./routes/recipesRouter");
 const authRouter = require("./routes/authRouter");
 const usersRouter = require("./routes/usersRouter");
+const ingredientsRouter = require("./routes/ingredientRouter");
 const bodyParser = require("body-parser");
 const cors = require("./util/CORS");
+const ingredientModel = require("./models/ingredientModel");
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(bodyParser.json());
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/recipes", recipesRouter);
+app.use("/ingredients", ingredientsRouter);
 
 const DB = process.env.DATABASE;
 const port = process.env.PORT;
