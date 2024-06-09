@@ -1,3 +1,4 @@
+const recipeModel = require("../models/recipeModel");
 const Recipe = require("../models/recipeModel");
 const errorResponse = require("../util/errorResponse");
 
@@ -13,6 +14,7 @@ exports.getRecipes = async (req, res, next) => {
       status: "success",
       page,
       limit,
+      items: recipes.length,
       data: {
         recipes,
       },
@@ -69,7 +71,7 @@ exports.editRecipe = async (req, res, next) => {
       }
     );
     res.status(200).json({
-      status: "Reciped successfully edited",
+      status: "Recipe successfully edited",
       recipe: updatedRecipe,
     });
   } catch (err) {
@@ -117,6 +119,27 @@ exports.getRecipesByUserId = async (req, res, next) => {
       res,
       400,
       "Failed to get the recipes. Error: " + err.message
+    );
+  }
+};
+
+exports.deleteAllRecipes = async (req, res, next) => {
+  try {
+    const deletedResponse = await Recipe.deleteMany();
+    if (deletedResponse.deletedCount === 0) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "No recipes found to delete",
+      });
+    }
+    res.status(204).json({
+      status: "All recipes deleted successfully",
+    });
+  } catch (err) {
+    return errorResponse(
+      res,
+      400,
+      "Failed to delete all the recipes. Error: " + err.message
     );
   }
 };

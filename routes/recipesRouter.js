@@ -15,6 +15,8 @@ router
     recipesController.postNewRecipe
   );
 
+router.route("/deleteAll").delete(isAuth, recipesController.deleteAllRecipes);
+
 router
   .route("/:id")
   .get(isAuth, recipesController.getSingleRecipe)
