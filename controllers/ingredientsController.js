@@ -1,5 +1,6 @@
 const Ingredient = require("../models/ingredientModel");
 const Recipe = require("../models/recipeModel");
+const errorResponse = require("../util/errorResponse");
 
 exports.getIngredientsByRecipeId = async (req, res, next) => {
   try {
@@ -97,5 +98,23 @@ exports.deleteAllIngredients = async (req, res, next) => {
       400,
       "Failed to delete all the ingredients. Error: " + err.message
     );
+  }
+};
+
+exports.getIngredientById = async (req, res, next) => {
+  try {
+    const ingredient = await Ingredient.findById(req.params.id);
+    if (!ingredient) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "Ingredient not found",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      data: ingredient,
+    });
+  } catch (err) {
+    return errorResponse(res, 400, "Failed to get the ingredient.");
   }
 };

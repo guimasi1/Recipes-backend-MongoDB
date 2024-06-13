@@ -12,4 +12,6 @@ router
   .route("/deleteAll")
   .delete(isAuth, ingredientsController.deleteAllIngredients);
 
+router.route("/:id").get(isAuth, ingredientsController.getIngredientById);
+
 module.exports = router;

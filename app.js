@@ -6,6 +6,8 @@ const recipesRouter = require("./routes/recipesRouter");
 const authRouter = require("./routes/authRouter");
 const usersRouter = require("./routes/usersRouter");
 const ingredientsRouter = require("./routes/ingredientRouter");
+const reviewsRouter = require("./routes/reviewRouter");
+
 const bodyParser = require("body-parser");
 const cors = require("./util/CORS");
 const ingredientModel = require("./models/ingredientModel");
@@ -18,6 +20,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/recipes", recipesRouter);
 app.use("/ingredients", ingredientsRouter);
+app.use("/reviews", reviewsRouter);
 
 const DB = process.env.DATABASE;
 const port = process.env.PORT;

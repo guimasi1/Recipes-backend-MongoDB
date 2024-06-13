@@ -28,6 +28,12 @@ const recipeSchema = new mongoose.Schema({
       },
     },
   ],
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);
