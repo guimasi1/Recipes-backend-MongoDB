@@ -44,13 +44,7 @@ exports.getSingleUser = async (req, res, next) => {
 
 exports.editUser = async (req, res, next) => {
   try {
-    const updatedUser = await Recipe.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-    );
+    const updatedUser = await Recipe.findByIdAndUpdate(req.params.id, req.body);
     res.status(200).json({
       status: "User successfully edited",
       user: updatedUser,

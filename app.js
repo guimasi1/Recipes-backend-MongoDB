@@ -10,7 +10,6 @@ const reviewsRouter = require("./routes/reviewRouter");
 
 const bodyParser = require("body-parser");
 const cors = require("./util/CORS");
-const ingredientModel = require("./models/ingredientModel");
 
 const app = express();
 
