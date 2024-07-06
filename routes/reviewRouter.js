@@ -6,6 +6,8 @@ router
   .get(reviewController.getAllReviews)
   .post(reviewController.createReview);
 
+router.route("/recipe/:id").delete(reviewController.removeAllReviewsByRecipeId);
+
 router
   .route("/:id")
   .get(reviewController.getReviewById)

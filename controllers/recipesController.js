@@ -1,16 +1,21 @@
 const Recipe = require("../models/recipeModel");
+const User = require("../models/userModel");
 const Ingredient = require("../models/ingredientModel");
 const errorResponse = require("../util/errorResponse");
 const mongoose = require("mongoose");
+const Review = require("../models/reviewModel");
 
 exports.getRecipes = async (req, res, next) => {
   try {
     const { page = 1, limit = 10, sort = "_id" } = req.query;
 
     const recipes = await Recipe.find()
-      .limit(limit * 1)
+      .populate("reviews", "rating content")
+      .populate("ingredients.ingredient")
+      .limit(limit)
       .skip((page - 1) * limit)
-      .sort(sort);
+      .sort(sort)
+      .exec();
 
     res.status(200).json({
       status: "success",
@@ -77,6 +82,9 @@ exports.postNewRecipe = async (req, res, next) => {
     });
 
     await newRecipe.save({ session });
+    await User.findByIdAndUpdate(author, {
+      $push: { recipes: newRecipe },
+    });
 
     // Commit della transazione
     await session.commitTransaction();
@@ -84,7 +92,6 @@ exports.postNewRecipe = async (req, res, next) => {
 
     res.status(201).json({
       status: "Recipe successfully created",
-      newRecipe,
     });
   } catch (err) {
     await session.abortTransaction();

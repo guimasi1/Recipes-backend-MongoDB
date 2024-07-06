@@ -89,6 +89,7 @@ exports.deleteAllIngredients = async (req, res, next) => {
         message: "No ingredients found to delete",
       });
     }
+
     res.status(204).json({
       status: "All ingredients deleted successfully",
     });

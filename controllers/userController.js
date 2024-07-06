@@ -1,11 +1,15 @@
 const User = require("../models/userModel");
+const Recipe = require("../models/recipeModel");
 const errorResponse = require("../util/errorResponse");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find()
+      .populate("reviews")
+      .populate("recipes", "title description imageUrl")
+      .exec();
     res.status(200).json({
-      status: "Success",
+      status: "success",
       data: {
         users,
       },
@@ -18,10 +22,12 @@ exports.getAllUsers = async (req, res, next) => {
 exports.getSingleUser = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const user = await User.findById(id);
+    const user = await User.findById(id)
+      .populate("reviews", "rating content")
+      .exec();
     if (!user) {
       return res.status(404).json({
-        status: "Failed",
+        status: "failed",
         message: "User not found",
       });
     }
